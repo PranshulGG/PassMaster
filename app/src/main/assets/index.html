@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <title id="page_title_web">Generate password</title>
+  <link rel="stylesheet" href="ui-files/font-usage.css">
+  <link rel="stylesheet" href="ui-files/variables.css">
+  <link rel="stylesheet" href="ui-files/ui.css">
+  <link rel="stylesheet" href="components/components.css">
+  <link rel="stylesheet" href="components/segment-btns.css">
+  <link rel="stylesheet" href="ripple-files/ripple.css">
+
+</head>
+
+<body>
+
+<div class="top_header_tabs" id="head-2">
+  <p id="tab_label">Generate password</p>
+
+  <div>
+
+    <button class="ripple-icon-btn regular" onclick="transitionToPage('pages/settings.html'); ActivityColor()" ontouchstart="playEffect(this)" ontouchend="playEffect2(this)" title="Open settings"
+            onclick="window.history.back()">
+      <span class="ripple-effect-icon"></span>
+      <span icon-outlined>settings</span>
+    </button>
+
+  </div>
+</div>
+
+<div class="tab-content" id="tab-content-0">
+  <div class="password_result">
+    <input type="text" disabled value="" id="password_result_input">
+    <div class="copy_action">
+      <md-icon-button id="copy_password_btn">
+        <md-icon icon-outlined>content_copy</md-icon>
+      </md-icon-button>
+    </div>
+
+    <div id="strength">
+      <md-linear-progress id="passwordStrength"></md-linear-progress>
+    </div>
+  </div>
+
+
+  <span class="label_title">Length: <span id="value_pass_length">10</span></span>
+  <div class="length">
+    <p>8</p>
+    <md-slider min="8" max="32" value="10" id="pass_length_slider" labeled ticks></md-slider>
+    <p>32</p>
+  </div>
+  <span class="label_title" style="padding-top: 10px; margin-top: 10px;">Controls</span>
+
+  <div class="password_generate_controls">
+
+    <md-list>
+
+      <md-list-item style="background-color: var(--Surface-Container-Low); margin-bottom: 5px; border-radius: 20px 20px 8px  8px;">
+        <div slot="headline" style="margin-bottom: 2px;">Uppercase <span
+                style="color: var(--On-Surface-Variant); font-size: 14px;">(eg. ABC)</span></div>
+        <md-switch slot="end" aria-label="controls" id="uppercase" selected onchange="validateSwitches()"></md-switch>
+      </md-list-item>
+
+
+      <md-list-item style="background-color: var(--Surface-Container-Low); margin-bottom: 5px; border-radius: 8px;">
+        <div slot="headline" style="margin-bottom: 2px;">Lowercase <span
+                style="color: var(--On-Surface-Variant); font-size: 14px;">(eg. abc)</span></div>
+        <md-switch slot="end" aria-label="controls" id="lowercase" onchange="validateSwitches()"></md-switch>
+      </md-list-item>
+
+      <md-list-item style="background-color: var(--Surface-Container-Low); margin-bottom: 5px; border-radius: 8px;">
+        <div slot="headline" style="margin-bottom: 2px;">Numbers <span
+                style="color: var(--On-Surface-Variant); font-size: 14px;">(eg. 345)</span></div>
+        <md-switch slot="end" aria-label="controls" id="numbers" selected onchange="validateSwitches()"></md-switch>
+      </md-list-item>
+
+      <md-list-item style="background-color: var(--Surface-Container-Low); margin-bottom: 5px; border-radius: 8px 8px 20px 20px;">
+        <div slot="headline" style="margin-bottom: 2px;">Special <span
+                style="color: var(--On-Surface-Variant); font-size: 14px;">(eg. @#$!)</span></div>
+        <md-switch slot="end" aria-label="controls" id="special" onchange="validateSwitches()"></md-switch>
+      </md-list-item>
+
+    </md-list>
+
+
+  </div>
+
+  <div class="generate_btn_wrap">
+    <md-elevated-button onclick="generatePassword()" trailing-icon>Generate <md-icon slot="icon"
+                                                                                     icon-outlined>key</md-icon></md-elevated-button>
+  </div>
+
+
+
+
+
+  <!-- createPass dialog -->
+  <md-dialog id="createLoginPasswordDialog">
+    <div slot="headline">
+      <span style="flex: 1;">Create a password</span>
+      <button class="ripple-icon-btn regular showInfoCreatePass" ontouchstart="playEffect(this)" ontouchend="playEffect2(this)" onclick="showInfoTextCreatePass()">
+        <span class="ripple-effect-icon"></span>
+        <span icon-outlined>info</span>
+      </button>
+    </div>
+
+    <div slot="content">
+
+      <md-filled-text-field placeholder="Password" type="password" maxlength="4" id="createPassInput_1" autocomplete="off" style="width: 100%;"></md-filled-text-field>
+      <md-filled-text-field error-text="Incorrect password"   placeholder="Confirm password" type="password" maxlength="4" id="confirmPassInput_2" hidden autocomplete="off" style="width: 100%;">
+        <md-icon icon-filled slot="trailing-icon" hidden id="error_icon_confirm_pass">info</md-icon></md-filled-text-field>
+
+
+      <div class="password_type" id="password_type_chips">
+
+        <md-chip-set>
+          <md-filter-chip label="4 Digits" name="PassWordType" selected onclick="togglePasswordTypeChips(this); setPasswordType('4-digits')" value="4-digit"></md-filter-chip>
+          <md-filter-chip label="8 Digits" name="PassWordType" onclick="togglePasswordTypeChips(this);setPasswordType('8-digits')" value="8-digit"></md-filter-chip>
+        </md-chip-set>
+
+      </div>
+
+
+
+
+    </div>
+
+    <div slot="actions">
+      <md-text-button hidden id="BackBTNPassword">Back</md-text-button>
+      <md-filled-button disabled id="nextCreatePassBtn">Next</md-filled-button>
+      <md-filled-button hidden id="confirmSetBtn">Set</md-filled-button>
+
+    </div>
+
+
+
+
+
+  </md-dialog>
+
+
+</div>
+<div class="tab-content" id="tab-content-1">
+  <div id="historyContainer"></div>
+  <div class="waterMark" id="mark_2" style="margin-top: 110px" hidden>
+    <i icon-outlined>cancel</i>
+    <p>No Password History</p>
+  </div>
+
+</div>
+<div class="tab-content" id="tab-content-2" style="position: relative;">
+
+
+  <div class="fab_container">
+    <md-fab variant="primary" id="openAddLoginDialog" >
+      <md-icon icon-outlined slot="icon">add</md-icon>
+    </md-fab>
+  </div>
+
+
+  <div id="saved_logins">
+
+  </div>
+
+
+  <div class="waterMark" id="mark_1" hidden>
+    <i icon-outlined>cancel</i>
+    <p>No Logins Added</p>
+  </div>
+
+
+  <md-dialog id="addLoginDialog">
+    <div slot="headline">
+      <span style="flex: 1;">Add a login</span>
+      <md-icon-button aria-label="lock login" toggle id="lock_login_btn">
+        <md-icon icon-outlined>lock_open_right</md-icon>
+        <md-icon icon-filled slot="selected">lock</md-icon>
+
+      </md-icon-button>
+    </div>
+
+    <form slot="content" id="LoginAdds" method="dialog">
+
+      <div class="title_img_wrap">
+        <md-filled-text-field label="Title" id="AddLoginTitle"></md-filled-text-field>
+        <img-button class="ripple_btn_dark_fix" id="openIconDialog">
+          <md-icon icon-outlined id="img_holder_icon">image</md-icon>
+        </img-button>
+      </div>
+      <div class="login_inputs">
+
+        <md-outlined-text-field label="Username" id="AddUserName">
+          <md-icon slot="leading-icon" icon-outlined>person</md-icon>
+        </md-outlined-text-field>
+        <md-outlined-text-field label="Password" id="AddPassword">
+          <md-icon slot="leading-icon" icon-outlined>password</md-icon>
+        </md-outlined-text-field>
+      </div>
+
+
+    </form>
+
+
+    <div slot="actions" id="addLoginActions">
+      <md-text-button form="LoginAdds" onclick="clearLoginAdd()">Cancel</md-text-button>
+      <md-text-button onclick="createLoginSave()" disabled id="LoginSaveBtn">Save</md-text-button>
+
+      <md-text-button onclick="clearLoginAdd()" id="LoginSaveBtnEDITING" hidden>Save</md-text-button>
+
+
+    </div>
+  </md-dialog>
+
+
+
+
+  <!-- icon-dialog -->
+  <md-dialog id="IconDialogSelection" style="min-width: 90%;" >
+    <div slot="headline">
+      <span style="flex: 1;">Choose icon</span>
+      <md-icon-button aria-label="close icon dialog" form="chooseIconForm">
+        <md-icon icon-outlined>close</md-icon>
+      </md-icon-button>
+    </div>
+    <form slot="content" method="dialog" id="chooseIconForm">
+      <div class="IconGridDialogWrap">
+
+        <div class="IconGridDialog">
+
+          <!-- <label class="icon_item_dialog" for="select_your_own">
+            <input type="radio" name="ChooseIconDialog" value="" id="yourOwnIconValue">
+            <div class="icon_img_dialog"><img src="brand-icons/your_own_add.svg" alt="" id="yourOwnIconImg"></div>
+
+            <span>Select</span>
+
+            <input type="file" id="select_your_own" accept="image/*" onchange="previewImage()">
+          </label> -->
+
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/user.webp">
+            <div class="icon_img_dialog"><img src="brand-icons/user.webp" alt=""></div>
+            <span>Regular</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/adobe.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/adobe.svg" alt=""></div>
+            <span>Adobe</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/airbnb.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/airbnb.svg" alt=""></div>
+            <span>Airbnb</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/apple.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/apple.svg" style="width: 65%;" alt=""></div>
+            <span>Apple</span>
+          </label>
+
+          <label class="icon_item_dialog" style="padding-bottom: 15px;">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/mcdonalds.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/mcdonalds.svg" alt=""></div>
+            <span>McDonalds</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/dominos-pizza.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/dominos-pizza.svg" alt=""></div>
+            <span>Dominos Pizza</span>
+          </label>
+
+          <label class="icon_item_dialog" style="padding-bottom: 15px;">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/aws.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/aws.svg" alt=""></div>
+            <span>AWS</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/airtel.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/airtel.svg" alt=""></div>
+            <span>Airtel</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/amazon.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/amazon.svg" alt=""></div>
+            <span>Amazon</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/kindle-fire.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/kindle-fire.svg" alt=""></div>
+            <span>Kindle</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/gmail.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/gmail.svg" alt=""></div>
+            <span>Gmail</span>
+          </label>
+
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/git.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/git.svg" alt=""></div>
+            <span>Git</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/github.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/github.svg" alt=""></div>
+            <span>Github</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/gitlab.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/gitlab.svg" alt=""></div>
+            <span>Gitlab</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/ebay.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/ebay.svg" alt=""></div>
+            <span>Ebay</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/youtube.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/youtube.svg" alt=""></div>
+            <span>Youtube</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/discord.png">
+            <div class="icon_img_dialog"><img src="brand-icons/discord.png" alt=""></div>
+            <span>Discord</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/firefox.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/firefox.svg" alt=""></div>
+            <span>FireFox</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/duo.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/duo.svg" alt=""></div>
+            <span>Duo</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/linkdin.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/linkdin.svg" alt=""></div>
+            <span>LinkDin</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/drive.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/drive.svg" alt=""></div>
+            <span>Drive</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/google-maps.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/google-maps.svg" alt=""></div>
+            <span>Google Maps</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/dribble.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/dribble.svg" alt=""></div>
+            <span>Dribble</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/line.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/line.svg" alt=""></div>
+            <span>Line</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/linux.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/linux.svg" alt=""></div>
+            <span>Linux</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/microsoft.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/microsoft.svg" alt=""></div>
+            <span>Microsoft</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/microsoft-office.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/microsoft-office.svg" alt=""></div>
+            <span>Microsoft office</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/microsoft-window.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/microsoft-window.svg" alt=""></div>
+            <span>Microsoft Windows</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/netflix.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/netflix.svg" alt=""></div>
+            <span>Netflix</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/nintendo.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/nintendo.svg" alt=""></div>
+            <span>Nintendo</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/hbo.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/hbo.svg" alt=""></div>
+            <span>HBO</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/notion.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/notion.svg" alt=""></div>
+            <span>Notion</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/opera.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/opera.svg" alt=""></div>
+            <span>Opera</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/origin.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/origin.svg" alt=""></div>
+            <span>Origin</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/outlook.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/outlook.svg" alt=""></div>
+            <span>Outlook</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/patreon.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/patreon.svg" alt=""></div>
+            <span>Patreon</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/paypal.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/paypal.svg" alt=""></div>
+            <span>PayPal</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/pinterest.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/pinterest.svg" alt=""></div>
+            <span>Pinterest</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/quora.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/quora.svg" alt=""></div>
+            <span>Quora</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/react.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/react.svg" alt=""></div>
+            <span>React</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/reddit.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/reddit.svg" alt=""></div>
+            <span>Reddit</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/shopify.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/shopify.svg" alt=""></div>
+            <span>Shopify</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/skype.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/skype.svg" alt=""></div>
+            <span>Skype</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/snapchat.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/snapchat.svg" alt=""></div>
+            <span>SnapChat</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/soundcloud.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/soundcloud.svg" alt=""></div>
+            <span>Sound Cloud</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/spotify.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/spotify.svg" alt=""></div>
+            <span>Spotify</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/stackoverflow.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/stackoverflow.svg" alt=""></div>
+            <span>Stack OverFlow</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/steam.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/steam.svg" alt=""></div>
+            <span>Steam</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/swift.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/swift.svg" alt=""></div>
+            <span>Swift</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/Telegram.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/telegram.svg" alt=""></div>
+            <span>Telegram</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/tik-tok.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/tik-tok.svg" alt=""></div>
+            <span>TikTok</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/instagram.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/instagram.svg" alt=""></div>
+            <span>Instagram</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/tinder.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/tinder.svg" alt=""></div>
+            <span>Tinder</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/u-torrent.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/u-torrent.svg" alt=""></div>
+            <span>uTorrent</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/twitch.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/twitch.svg" alt=""></div>
+            <span>Twitch</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/uber.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/uber.svg" alt=""></div>
+            <span>Uber</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/ubisoft.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/ubisoft.svg" alt=""></div>
+            <span>Ubisoft</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/unsplash.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/unsplash.svg" alt=""></div>
+            <span>Unsplash</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/ups.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/ups.svg" alt=""></div>
+            <span>UPS</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/venmo.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/venmo.svg" alt=""></div>
+            <span>Venmo</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/visa.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/visa.svg" alt=""></div>
+            <span>Visa</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/whatsApp.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/whatsapp.svg" alt=""></div>
+            <span>WhatsApp</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/wiki.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/wiki.svg" alt=""></div>
+            <span>Wiki</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/wordpress.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/wordpress.svg" alt=""></div>
+            <span>Wordpress</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/x-box.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/x-box.svg" alt=""></div>
+            <span>XBOX</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/x-twitter.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/x-twitter.svg" alt=""></div>
+            <span>X</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/yahoo.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/yahoo.svg" alt=""></div>
+            <span>Yahoo</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/zara.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/zara.svg" alt=""></div>
+            <span>ZARA</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/playstation.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/playstation.svg" alt=""></div>
+            <span>PlayStation</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/nvidia.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/nvidia.svg" alt=""></div>
+            <span>Nvidia</span>
+          </label>
+
+          <label class="icon_item_dialog">
+            <input type="radio" name="ChooseIconDialog" value="brand-icons/google.svg">
+            <div class="icon_img_dialog"><img src="brand-icons/google.svg" alt=""></div>
+            <span>Google</span>
+          </label>
+
+        </div>
+
+
+      </div>
+
+    </form>
+
+    <div slot="actions">
+      <md-text-button onclick="SetSelectedIconLogin()">OK</md-text-button>
+    </div>
+
+  </md-dialog>
+
+
+
+  <!-- pass dialog -->
+  <md-dialog id="enter_password_dialog">
+    <div slot="headline">Enter password</div>
+
+    <div slot="content">
+      <md-outlined-text-field placeholder="Password" id="enterPasswordVerify" error-text="Wrong password. Please try again" type="password" maxlength="8">
+        <md-icon-button slot="trailing-icon" toggle id="visibility_enterPassInput">
+          <md-icon icon-outlined >visibility_off</md-icon>
+          <md-icon icon-outlined slot="selected">visibility</md-icon>
+        </md-icon-button>
+      </md-outlined-text-field>
+    </div>
+
+    <div slot="actions">
+      <md-outlined-button id="VerifyPassCancelBtn" value="cancel">Cancel</md-outlined-button>
+      <md-filled-button id="VerifyPassBtn" value="ok">OK</md-filled-button>
+
+    </div>
+
+  </md-dialog>
+</div>
+
+<style>
+    .btn-nav{
+      width: 100%;
+    }
+
+  </style>
+
+<div class="nav-tab" id="nav-tab">
+  <div class="main-btn">
+    <label class="btn-nav">
+      <button id="homeTab" class="nav-icon tab" onclick="showTab(0); checkTHEME()">home</button>
+      <label class="label" for="homeTab">Home</label>
+    </label>
+    <label class="btn-nav">
+      <button id="historyTab" class="nav-icon tab" onclick="showTab(1); checkTHEME()">deployed_code_history</button>
+      <label class="label" for="historyTab">History</label>
+    </label>
+    <label class="btn-nav">
+      <button id="LoginsTab" class="nav-icon tab" onclick="showTab(2); checkTHEME()">key</button>
+      <label class="label" for="LoginsTab">Logins</label>
+    </label>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="info_text_create_pass" hidden>
+  <md-icon icon-filled>info</md-icon>
+  <p>The password secures your logins. You can change or remove it later</p>
+</div>
+
+
+<script>
+  function showInfoTextCreatePass(){
+      document.getElementById('info_text_create_pass').hidden = false;
+      document.querySelector('.showInfoCreatePass').style.pointerEvents = 'none';
+      document.querySelector('.showInfoCreatePass').style.opacity = '0.3';
+
+
+      setTimeout(() =>{
+        document.getElementById('info_text_create_pass').style.top = '-70px';
+      }, 3000)
+      setTimeout(() =>{
+      document.getElementById('info_text_create_pass').hidden = true;
+      document.querySelector('.showInfoCreatePass').style.pointerEvents = '';
+      document.getElementById('info_text_create_pass').style.top = '';
+      document.querySelector('.showInfoCreatePass').style.opacity = '';
+
+      }, 3300)
+    }
+
+
+
+
+
+setTimeout(() =>{
+  checkTHEME();
+}, 250);
+setTimeout(() =>{
+  checkTHEME();
+}, 500);
+
+
+
+</script>
+
+<!-- device error -->
+<div class="error_device" oncontextmenu="return false;" title="Resize window or use a mobile device">
+  <h1>Isn't made for PC or wide devices <br><span title=":(">:)</span></h1>
+</div>
+<script type="module" src="./index.js"></script>
+<script src="./bundle.js"></script>
+<script src="components-script.js/bottom-nav.js"></script>
+<script src="modules/call-themes.js"></script>
+<script src="app/app.js"></script>
+<script src="app/navigate.js"></script>
+<script src="app/apply.js"></script>
+<script src="modules/ripple.js"></script>
+<script src="components-script.js/components.js"></script>
+<script src="modules/scroll.js"></script>
+<script src="app/saves.js"></script>
+<script src="ripple-files/icon-ripple.js"></script>
+</body>
+
+</html>
+
+
+
+

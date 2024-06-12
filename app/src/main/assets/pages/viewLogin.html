@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>ViewLogins Page</title>
+    <link rel="stylesheet" href="../ui-files/ui.css">
+    <link rel="stylesheet" href="../ui-files/font-usage.css">
+    <link rel="stylesheet" href="../ui-files/variables.css">
+    <link rel="stylesheet" href="../components/components.css">
+    <link rel="stylesheet" href="../ripple-files/ripple.css">
+    <link rel="stylesheet" href="../components/modal-ver.css">  
+    <link rel="stylesheet" href="../components/segment-btns.css">   
+
+</head>
+<body>
+    <div class="img_login_view_img">
+        <div class="img_view_login_wrap">
+      <img id="img_view_login" alt="Image" /></div>
+        <p id="view_login_title"></p>
+
+        <div class="back_btn_login_view">
+            <button class="ripple-icon-btn regular" ontouchstart="playEffect(this)" ontouchend="playEffect2(this)" onclick="window.history.back()" title="Go back">
+                <span class="ripple-effect-icon" style="width: 50px; height: 50px; inset: unset;"></span>
+                <span icon-outlined>arrow_back</span>
+            </button>
+        </div>
+    </div>
+
+
+    <div class="main_login_info_view">
+        <div class="div_view_login">
+            <md-icon icon-filled>person</md-icon>
+            <viewinfowrap>
+            <span>Username</span>
+            <p id="name_view_user_login"></p>
+        </viewinfowrap>
+        <md-icon-button onclick="copy_login_info('name_view_user_login', 'UsernameValueVisi')" id="copy_username_toggle_view" toggle>
+            <md-icon icon-outlined>content_copy</md-icon>
+            <md-icon icon-outlined slot="selected">check</md-icon>
+        </md-icon-button>
+        </div>
+
+        <div class="div_view_login" style="border-radius: 5px 5px 20px 20px;">
+            <md-icon icon-filled>passkey</md-icon>
+            <viewinfowrap>
+            <span>Password</span>
+            <p id="pass_view_user_login"></p>
+        </viewinfowrap>
+        <md-icon-button toggle id="toggle_pass_visi" onclick="toggleVisi()">
+            <md-icon icon-outlined>visibility_off</md-icon>
+            <md-icon icon-outlined slot="selected">visibility</md-icon>
+        </md-icon-button>
+        <md-icon-button onclick="copy_login_info('pass_view_user_login', 'PassLengthValueVisi')" toggle id="copy_pass_toggle_view">
+            <md-icon icon-outlined>content_copy</md-icon>
+            <md-icon icon-outlined slot="selected">check</md-icon>
+        </md-icon-button>
+        </div>
+    </div>
+
+
+
+    <script>
+        function getQueryParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                name: params.get('name'),
+                pass: params.get('pass'),
+                title: params.get('title'),
+                img: params.get('img')
+            };
+        }
+
+        function displayInfo() {
+            const info = getQueryParams();
+            document.getElementById('name_view_user_login').textContent = info.name;
+            document.getElementById('name_view_user_login').setAttribute('UsernameValueVisi', info.name);
+
+            document.getElementById('pass_view_user_login').textContent = '•'.repeat(info.pass.length);
+            document.getElementById('pass_view_user_login').setAttribute('PassLengthValue', '•'.repeat(info.pass.length));
+            document.getElementById('pass_view_user_login').setAttribute('PassLengthValueVisi', info.pass);
+
+            
+            document.getElementById('view_login_title').textContent = info.title;
+            document.getElementById('img_view_login').src = '../' + info.img;
+
+            if(info.img === 'brand-icons/apple.svg'){
+                document.getElementById('img_view_login').style.width = '60px'
+            } else{
+                document.getElementById('img_view_login').style.width = ''
+            }
+        }
+
+        window.onload = displayInfo;
+
+        
+
+
+
+
+        function toggleVisi(){
+     const PassLengthValue = document.getElementById('pass_view_user_login').getAttribute('PassLengthValue');
+     const PassLengthValueVisi = document.getElementById('pass_view_user_login').getAttribute('PassLengthValueVisi');
+     
+
+        if(document.getElementById('toggle_pass_visi').selected){
+            document.getElementById('pass_view_user_login').textContent = PassLengthValueVisi;
+        } else{
+            document.getElementById('pass_view_user_login').textContent = PassLengthValue;
+        }
+    };
+
+
+
+
+function copy_login_info(copyId, copyAt){
+    var textToCopy = document.getElementById(copyId).getAttribute(copyAt);
+    var tempInput = document.createElement('input');
+    tempInput.style.position = 'absolute';
+    tempInput.style.left = '-9999px';
+    tempInput.value = textToCopy;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+}
+
+
+
+document.getElementById('copy_pass_toggle_view').addEventListener('change', () =>{
+    if(document.getElementById('copy_pass_toggle_view').selected){
+        setTimeout(() =>{
+        document.getElementById('copy_pass_toggle_view').selected = false;
+        }, 2000);
+    } else{
+        document.getElementById('copy_pass_toggle_view').selected = true;
+    }
+})
+
+document.getElementById('copy_username_toggle_view').addEventListener('change', () =>{
+    if(document.getElementById('copy_username_toggle_view').selected){
+        setTimeout(() =>{
+        document.getElementById('copy_username_toggle_view').selected = false;
+        }, 2000);
+    } else{
+        document.getElementById('copy_username_toggle_view').selected = true;
+    }
+})
+
+
+setTimeout(() =>{
+    checkSearchScroll();
+}, 200);
+    </script>
+
+<!-- gg -->
+
+
+<script src="../bundle.js"></script>
+<script type="module" src="../index.js"></script>
+<script src="../app/apply.js"></script>
+<script src="../app/navigate.js"></script>
+<script src="../ripple-files/icon-ripple.js"></script>
+<script src="../modules/call-themes.js"></script>
+</body>
+</html>

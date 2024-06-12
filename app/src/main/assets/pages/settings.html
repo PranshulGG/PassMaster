@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>Settings Page</title>
+    <link rel="stylesheet" href="../ui-files/ui.css">
+    <link rel="stylesheet" href="../ui-files/font-usage.css">
+    <link rel="stylesheet" href="../ui-files/variables.css">
+    <link rel="stylesheet" href="../components/components.css">
+    <link rel="stylesheet" href="../ripple-files/ripple.css">
+    <link rel="stylesheet" href="../components/modal-ver.css">  
+    <link rel="stylesheet" href="../components/segment-btns.css">   
+
+    <style>
+      .activity-large-content::before{
+        position: fixed;
+        bottom: 0;
+        content: '';
+        width: 100%;
+        background: linear-gradient(0deg, var(--Surface) 10%, rgba(255, 0, 0, 0));
+        height: 30px;
+        z-index: 1;
+      }
+
+      #clearClipboardAfter{
+        transition: all 0.5s cubic-bezier(1,0,0,1);
+      }
+    </style>
+
+</head>
+<body>
+    <div class="activity-large open">
+        <div class="header-activity-large" id="head-1">
+            <button class="ripple-icon-btn regular" ontouchstart="playEffect(this)" ontouchend="playEffect2(this)" title="Go back"
+                onclick="window.history.back()">
+                <span class="ripple-effect-icon"></span>
+                <span icon-outlined>arrow_back</span>
+            </button>
+            <p class="label-hidden-large" style="white-space: nowrap;">Settings</p>
+        </div>
+        <div class="activity-large-content" id="headUser-1">
+            <p class="label-large-main">Settings</p>
+            <div class="content-parent-large" style="padding-bottom: 32px;">
+                <p class="title">App looks</p>
+                <md-list>
+
+
+
+                    <md-list-item>
+                        <md-icon icon-filled slot="start">dark_mode</md-icon>
+                        <div slot="headline">Dark theme</div>
+                        <div slot="supporting-text">Dark color scheme for the app</div>
+                        <md-switch slot="end" id="dark_mode_switch" aria-label="Enable dark mode" ></md-switch>
+                    </md-list-item>
+
+
+                    <div class="theme_selection" margin>
+
+                        <div class="theme_items">
+          
+                          <div class="color_item " >
+                            <input type="radio" name="themes" id="blue" value="Material You (Berry pop blue 44)">
+                            <label for="blue" style="--clr: #2196f3;"></label>
+                          </div>
+          
+                          <div class="color_item " >
+                            <input type="radio" name="themes" id="purple" value="Material You (Raisin purple 100)">
+                            <label for="purple" style="--clr: #673ab7;"></label>
+          
+                          </div>
+          
+                          <div class="color_item " >
+                            <input type="radio" name="themes" id="yellow" value="Material You (Olive pop green 49)">
+                            <label for="yellow" style="--clr: #ffeb3b;"></label>
+          
+                          </div>
+          
+                          <div class="color_item " >
+                            <input type="radio" name="themes" id="green" value="Material You (Forest green 33)">
+                            <label for="green" style="--clr: #4caf50;"></label>
+          
+                          </div>
+          
+                          <div class="color_item " >
+                            <input type="radio" name="themes" id="red" value="Material You (Chestnut cool red 122)">
+                            <label for="red" style="--clr: #f44336;"></label>
+          
+                          </div>
+          
+                          <div class="color_item " >
+                            <input type="radio" name="themes" id="pink" value="Material You (Raspberry pink P99)">
+                            <label for="pink" style="--clr: #e91e63;"></label>
+          
+                          </div>
+          
+                          <div class="color_item " >
+                            <input type="radio" name="themes" id="orange" value="Material You (Hint orange 33)">
+                            <label for="orange" style="--clr: #ff5722;"></label>
+          
+                          </div>
+          
+                          <div class="color_item " >
+                            <input type="radio" name="themes" id="charcoal" value="Material You (Deep charcoal 83)">
+                            <label for="charcoal" style="--clr: #607d8b;"></label>
+          
+                          </div>
+          
+                          <div class="color_item " >
+                            <input type="radio" name="themes" id="blue-bright" value="Material You (Blue bright P40)" checked>
+                            <label for="blue-bright" style="--clr: #3f51b5;"></label>
+          
+                          </div>
+        
+          
+                        </div>
+          
+                      </div>
+
+
+                      <md-list-item type="button" id="pageAnimationSetting" onclick="transitionToPage('pageAnimationSetting.html'); ActivityColor();">
+                        <md-icon icon-filled slot="start">animation</md-icon>
+                        <div slot="headline">Page animation</div>
+                        <div slot="supporting-text">Choose transition effect for page navigation</div>
+                        <md-icon icon-filled slot="end">chevron_right</md-icon>
+                    </md-list-item> 
+
+                    <md-list-item>
+                      <md-icon slot="start" icon-filled>motion_photos_paused</md-icon>
+                      <div slot="headline">No animations</div>
+                      <div slot="supporting-text">Animations are disabled enhance performance</div>
+                      <md-switch slot="end" id="noAnimtionSwitch"></md-switch>
+                    </md-list-item>
+
+                </md-list>
+
+
+                <p class="title" style="margin-top: 5px; padding-bottom: 0;">Other</p>
+
+                <md-list>
+                  <md-list-item>
+                    <md-icon slot="start" icon-filled>inventory</md-icon>
+                    <div slot="headline">Clear clipboard</div>
+                    <div slot="supporting-text">Automatically clear copied passwords after certain amout of time</div>
+                    <md-switch slot="end" id="clearClipboardSwitch"></md-switch>
+                  </md-list-item>
+
+                  <md-list-item style="height: 0; overflow: hidden; border-bottom: 1px solid var(--Outline-Variant);" id="clearClipboardAfter">
+                    <div slot="headline">Clear clipboard after</div>
+
+                    <md-filled-select slot="end" style="min-width: max-content;" id="selectClipboardClearTime">
+                      <md-select-option value="5000" menu-type>
+                        <div slot="headline">5 secs</div>
+                      </md-select-option>
+                      <md-select-option value="10000" menu-type>
+                        <div slot="headline">10 secs</div>
+                      </md-select-option>
+                      <md-select-option value="30000" selected menu-type>
+                        <div slot="headline">30 secs</div>
+                      </md-select-option>
+                      <md-select-option value="60000" menu-type>
+                        <div slot="headline">1 min</div>
+                      </md-select-option>
+                      <md-select-option value="50000" menu-type>
+                        <div slot="headline">5 mins</div>
+                      </md-select-option>
+                    </md-filled-select>
+                  </md-list-item>
+
+                <md-list-item>
+                  <md-icon slot="start" icon-filled>warning</md-icon>
+                  <div slot="headline">Deleting login</div>
+                  <div slot="supporting-text">Show a confirmation dialog before deleting the login</div>
+                  <md-switch slot="end" id="DeletingLoginConfirmToggle"></md-switch>
+                </md-list-item>
+
+                <md-list-item>
+                  <md-icon slot="start" icon-filled>subtitles</md-icon>
+                  <div slot="headline">Hide subtitle</div>
+                  <div slot="supporting-text">Display only title and hide subtitle like username in Logins</div>
+                  <md-switch slot="end" id="HideSubtitleSwitch"></md-switch>
+                </md-list-item>
+
+                <md-list-item type="button" id="changePasswordDialogtoggle">
+                  <md-icon icon-filled slot="start">lock_reset</md-icon>
+                  <div slot="headline">Change password</div>
+                  <div slot="supporting-text">Create a new password for your logins</div>
+                </md-list-item>
+
+              </md-list>
+
+
+                <p class="title" style="margin-top: 5px;">Additional</p>
+                <md-list>
+
+                    <md-list-item>
+                        <md-icon icon-filled slot="start">format_paint</md-icon>
+                        <div slot="headline">Theme name</div>
+                        <div slot="supporting-text" id="themeName"></div>
+                    </md-list-item>
+
+                    <md-list-item  onclick="transitionToPage('AboutPage.html'); ActivityColor()" type="button">
+                        <md-icon icon-filled slot="start">info</md-icon>
+                        <div slot="headline">About PassMaster</div>
+                        <div slot="supporting-text">Learn about the app</div>
+                        <md-icon icon-outlined slot="end">chevron_right</md-icon>
+                    </md-list-item>
+
+                    <md-divider></md-divider>
+
+                    <md-list-item type="button" style="--md-list-item-pressed-state-layer-color: var(--Error);" id="DeleteAppData">
+                      <md-icon slot="start" icon-filled style="color: var(--Error);">delete_forever</md-icon>
+                      <div slot="headline">Delete data</div>
+                      <div slot="supporting-text">Delete all data, all logins, settings, password, reset the app</div>
+                    </md-list-item>
+
+                </md-list>
+
+
+
+
+
+
+                <!-- change pass -->
+
+                <md-dialog style="min-width: 95%;" id="changePasswordDialog">
+                  <div slot="headline">Change password</div>
+
+                  <div slot="content" style="display: flex; flex-direction: column; gap: 10px;">
+                    <md-outlined-text-field placeholder="Old password"  id="oldPasswordInput" error-text="Incorrect password" type="password">
+                      <md-icon slot="trailing-icon" icon-filled hidden hidden-icon-old-pass>info</md-icon>
+                    </md-outlined-text-field>
+                    <div style="display: flex; gap: 5px;">
+                    <md-outlined-text-field placeholder="New" type="password" maxlength="4" id="NewPasswordInput" style="width: 100%;"></md-outlined-text-field>
+                    <md-outlined-text-field placeholder="Confirm" type="password" maxlength="4" style="width: 100%;" id="ConfirmNewPasswordInput">
+                      <md-icon slot="trailing-icon" icon-filled hidden hidden-icon-new-confirm-pass>info</md-icon>
+                    </md-outlined-text-field></div>
+
+                    <md-chip-set style="margin-top: 10px;">
+                      <md-filter-chip label="4 digits" selected elevated onclick="togglePasswordTypeChipsReset(this)" value="4-digit-reset" name="PassWordTypeReset"></md-filter-chip>
+                      <md-filter-chip label="8 digits" elevated onclick="togglePasswordTypeChipsReset(this)" value="8-digit-reset" name="PassWordTypeReset"></md-filter-chip>
+                    </md-chip-set>
+                  </div>
+
+
+                    <div slot="actions">
+                      <md-text-button id="cancelChangePassword">Cancel</md-text-button>
+                      <md-text-button disabled id="createResetPassword">Change</md-text-button>
+                    </div>
+
+                </md-dialog>
+
+
+
+
+                <div class="select_1_overlay" hidden></div>
+
+
+                
+
+
+
+                <!-- confirm delete data -->
+                <md-dialog id="DeleteDataConfirmDialog">
+                  <div slot="headline">Confirm password</div>
+                  <div slot="content">
+                    <md-outlined-text-field placeholder="Password" error-text="Wrong password" type="password" id="ConfirmPasswordDeleteData">
+                      <md-icon-button toggle slot="trailing-icon" id="visibleConfirmAppDataInput" onclick="visibleConfirmAppDataInput()">
+                        <md-icon icon-outlined>visibility_off</md-icon>
+                        <md-icon icon-outlined slot="selected">visibility</md-icon>
+                      </md-icon-button>
+                    </md-outlined-text-field>
+                  </div>
+                  <div slot="actions">
+                    <md-text-button id="CancelDeleteData">Cancel</md-text-button>
+                    <md-text-button id="DeleteConfirmDataBtn" style="width: 77px; height: 44px;">Delete</md-text-button>
+                  </div>
+                </md-dialog>
+           </div>  
+        </div>    
+    </div>    
+
+    <!-- theme-overlay -->
+<div class="theme_overlay" hidden>
+    <md-circular-progress id="theme_loader"></md-circular-progress>
+</div>
+
+
+<!-- device error -->
+<div class="error_device" oncontextmenu="return false;" title="Resize window or use a mobile device">
+  <h1>Isn't made for PC or wide devices <br><span title=":(">:)</span></h1>
+</div>
+
+
+<script>
+
+  const DeletingLoginConfirmToggle = document.getElementById('DeletingLoginConfirmToggle');
+
+  DeletingLoginConfirmToggle.addEventListener('change', () =>{
+    localStorage.setItem('ShowDeleteConfirm', DeletingLoginConfirmToggle.selected);
+  });
+
+  const DeletingLoginConfirmToggleState = localStorage.getItem('ShowDeleteConfirm');
+
+  if(DeletingLoginConfirmToggleState === 'false'){
+    DeletingLoginConfirmToggle.selected = false;
+  } else{
+    DeletingLoginConfirmToggle.selected = true;
+
+  }
+
+
+
+  function visibleConfirmAppDataInput(){
+    if(document.getElementById('visibleConfirmAppDataInput').selected){
+      document.getElementById('ConfirmPasswordDeleteData').setAttribute('type', 'text');
+    } else{
+      document.getElementById('ConfirmPasswordDeleteData').setAttribute('type', 'password');
+    }
+    document.getElementById('ConfirmPasswordDeleteData').focus();
+  }
+
+
+  const HideSubtitleSwitch = document.getElementById('HideSubtitleSwitch');
+
+
+HideSubtitleSwitch.addEventListener('change', () =>{
+    localStorage.setItem('HideSubtitle', HideSubtitleSwitch.selected);
+});
+
+if(HideSubtitleSwitch){
+    if(localStorage.getItem('HideSubtitle') === 'true'){
+        HideSubtitleSwitch.selected = true;
+    } else{
+        HideSubtitleSwitch.selected = false;
+    }
+}
+
+
+
+
+const noAnimtionSwitch = document.getElementById('noAnimtionSwitch');
+
+noAnimtionSwitch.addEventListener('change', () =>{
+  localStorage.setItem('noAnimtionSwitch', noAnimtionSwitch.selected);
+
+  applyNoAnimations()
+});
+
+if(localStorage.getItem('noAnimtionSwitch') === 'true'){
+  noAnimtionSwitch.selected = true;
+
+} else{
+  noAnimtionSwitch.selected = false;
+
+}
+
+function applyNoAnimations(){
+  if(localStorage.getItem('noAnimtionSwitch') === 'true'){
+    document.body.style.transition = 'none';
+    document.getElementById('clearClipboardAfter').style.transition = 'none'
+    document.getElementById('selectClipboardClearTime').setAttribute('quick', '')
+    document.getElementById('pageAnimationSetting').disabled = true;
+    document.getElementById('pageAnimationSetting').style.pointerEvents = 'none';
+
+
+} else{
+      document.body.style.transition = '';
+    document.getElementById('clearClipboardAfter').style.transition = ''
+    document.getElementById('selectClipboardClearTime').removeAttribute('quick', '')
+    document.getElementById('pageAnimationSetting').disabled = false;
+    document.getElementById('pageAnimationSetting').style.pointerEvents = '';
+
+}
+}
+
+</script>
+
+
+
+
+
+  
+    <script src="../app/navigate.js"></script>
+    <script src="../components-script.js/components.js"></script>
+    <script src="../ripple-files/icon-ripple.js"></script>
+    <script src="../modules/scroll.js"></script>
+    <script src="../modules/call-themes.js"></script>
+    <script src="../bundle.js"></script>
+    <script type="module" src="../index.js"></script>
+    <script src="../app/app.js"></script>
+    <script src="../app/theme.js"></script>
+    <script src="../app/changePass.js"></script>
+    
+</body>
+
+</html>

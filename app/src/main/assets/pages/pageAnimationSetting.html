@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <title>animations Setting Page</title>
+    <link rel="stylesheet" href="../ui-files/ui.css">
+    <link rel="stylesheet" href="../ui-files/font-usage.css">
+    <link rel="stylesheet" href="../ui-files/variables.css">
+    <link rel="stylesheet" href="../components/components.css">
+    <link rel="stylesheet" href="../ripple-files/ripple.css">
+    <link rel="stylesheet" href="../components/modal-ver.css">   
+    <link rel="stylesheet" href="../components/segment-btns.css">     
+
+</head>
+<body>
+    <div class="activity-large open">
+        <div class="header-activity-large" id="" style="overflow: hidden;">
+            <button class="ripple-icon-btn regular" ontouchstart="playEffect(this)" ontouchend="playEffect2(this)" title="Go back"
+                onclick="window.history.back()">
+                <span class="ripple-effect-icon" style="width: 60px; height: 60px; inset: unset; "></span>
+                <span icon-outlined>arrow_back</span>
+            </button>
+            <p class="label-hidden-large">Page animation</p>
+        </div>
+        <div class="activity-large-content" id="">
+            <p class="label-large-main">Page animation</p>
+            <div class="content-parent-large">
+
+                <md-list>
+
+                    <md-list-item style="--md-list-item-two-line-container-height: 56px;" onclick="document.getElementById('scaleInOption').checked=true;document.getElementById('scaleInOption').dispatchEvent(new Event('change'));">
+                        <md-radio slot="start" name="animationType" value="ScaleIn" id="scaleInOption" style="z-index: 1;"></md-radio>
+                        <div slot="headline" id="">Scale Out</div>
+                        <md-icon icon-outlined slot="end">app_shortcut</md-icon>
+                        <md-ripple for="control2"></md-ripple>
+                        <span style="position: absolute; top: 0; right: 0; width: 100%; height: 100%;" id="control2"></span>
+
+                    </md-list-item>
+                    <md-list-item style="--md-list-item-two-line-container-height: 56px;" onclick="document.getElementById('scaleOutOption').checked=true;document.getElementById('scaleOutOption').dispatchEvent(new Event('change'));console.log('ok')">
+                        <md-radio slot="start" name="animationType" value="ScaleOut" id="scaleOutOption" style="z-index: 1;"></md-radio>
+                        <div slot="headline" id="">Scale In</div>
+                        <md-icon icon-outlined slot="end">app_shortcut</md-icon>
+                        <md-ripple for="control"></md-ripple>
+                        <span style="position: absolute; top: 0; right: 0; width: 100%; height: 100%;" id="control"></span>
+                    </md-list-item>
+
+                </md-list>
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        const radioAnimation_1 = document.getElementById('scaleInOption');
+        const radioAnimation_2 = document.getElementById('scaleOutOption');
+
+
+        function setAnimationType() {   
+    if (radioAnimation_1.checked) {
+        localStorage.setItem('selectedAnimation', radioAnimation_1.value);
+    } else{
+        localStorage.setItem('selectedAnimation', radioAnimation_2.value);
+
+    }
+}
+
+radioAnimation_1.addEventListener('change', setAnimationType);
+radioAnimation_2.addEventListener('change', setAnimationType);
+
+
+const selectedAnimationOption = localStorage.getItem('selectedAnimation');
+
+    if(selectedAnimationOption === 'ScaleIn'){
+        radioAnimation_1.checked = true;
+    }else{
+        radioAnimation_2.checked = true;
+
+    }
+
+    </script>
+
+<script src="../app/navigate.js"></script>
+<script src="../components-script.js/components.js"></script>
+<script src="../ripple-files/icon-ripple.js"></script>
+<script src="../modules/scroll.js"></script>
+<script src="../modules/call-themes.js"></script>
+<script src="../bundle.js"></script>
+<script type="module" src="../index.js"></script>
+<script src="../app/ripple.js"></script>
+<script src="../app/app.js"></script>
+<script src="../app/apply.js"></script>
+
+</body>
+
+</html>
