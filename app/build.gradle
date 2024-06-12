@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace 'com.example.passmaster'
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.passmaster"

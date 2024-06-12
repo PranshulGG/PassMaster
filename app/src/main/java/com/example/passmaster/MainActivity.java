@@ -1089,7 +1089,7 @@ public class MainActivity extends AppCompatActivity {
                     url.startsWith("https://fonts.google.com/specimen/Poppins?query=poppins") ||
                     url.startsWith("https://github.com/material-components/material-web") ||
                     url.startsWith("https://www.termsfeed.com/") ||
-                    url.startsWith("https://github.com/PranshulGG/CalcMaster_A_Calculator_App") ||
+                    url.startsWith("https://github.com/PranshulGG/PassMaster") ||
                     url.startsWith("mailto:pranshul.devmain@gmail.com");
         }
 
