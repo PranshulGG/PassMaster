@@ -1090,7 +1090,8 @@ public class MainActivity extends AppCompatActivity {
                     url.startsWith("https://github.com/material-components/material-web") ||
                     url.startsWith("https://www.termsfeed.com/") ||
                     url.startsWith("https://github.com/PranshulGG/PassMaster") ||
-                    url.startsWith("mailto:pranshul.devmain@gmail.com");
+                    url.startsWith("mailto:pranshul.devmain@gmail.com")||
+                    url.startsWith("https://github.com/PranshulGG/PassMaster/releases");
         }
 
     }
