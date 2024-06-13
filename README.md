@@ -52,7 +52,7 @@ PassMaster is developed with pure HTML, CSS, JavaScript, and Java. Designed to m
 <br>
 <br>
 
-> [!WARNING]
+> [!NOTE]
 > The app is designed to run on Android devices and does not support web browsers. Attempting to open the app in a browser will not work.
 
 <br>
