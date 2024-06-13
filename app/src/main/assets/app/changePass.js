@@ -142,6 +142,12 @@ function setTimeOutClearClipboard(){
     localStorage.setItem('ClearClipboardTimeOut', selectClipboardClearTime.value);
 }
 
+const selectedTIMEOUTCLEARCLIPBOARD = localStorage.getItem('ClearClipboardTimeOut');
+
+if (selectedTIMEOUTCLEARCLIPBOARD) {
+    document.querySelector(`[value="${selectedTIMEOUTCLEARCLIPBOARD}"]`).selected = true;
+}
+
 if(!localStorage.getItem('ClearClipboardTimeOut')){
     localStorage.setItem('ClearClipboardTimeOut', '30000');
 
